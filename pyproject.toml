@@ -1,0 +1,19 @@
+[project]
+name = "comfyui-muscriptor"
+version = "0.1.0"
+description = "ComfyUI custom nodes for MuScriptor - audio-to-MIDI multi-instrument transcription"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+# Intentionally empty: everything the transcription path needs (torch, numpy,
+# einops, safetensors, packaging, huggingface_hub) already ships with ComfyUI;
+# mido is replaced by the bundled midi_shim.py.
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/jtydhr88/ComfyUI-muscriptor"
+
+[tool.comfy]
+PublisherId = "jtydhr88"
+DisplayName = "ComfyUI muscriptor"
+Icon = ""

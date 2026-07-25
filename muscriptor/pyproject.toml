@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "muscriptor"
+version = "0.2.2"
+description = "Audio-to-MIDI transcription using a transformer language model"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Kyutai x Mirelo" }]
+keywords = ["audio", "midi", "transcription", "music", "transformer"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
+dependencies = [
+    # PyTorch stopped publishing Intel-mac (darwin x86_64) wheels after 2.2.2,
+    # which only has wheels up to Python 3.12: on Intel macs pin torch (and
+    # NumPy 1.x, which torch 2.2.2 was compiled against) and run under
+    # Python <= 3.12, e.g. `uvx --python 3.12 muscriptor` (see README).
+    "torch>=2.0 ; sys_platform != 'darwin' or platform_machine != 'x86_64'",
+    "torch>=2.0,<2.3 ; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    "numpy>=1.24 ; sys_platform != 'darwin' or platform_machine != 'x86_64'",
+    "numpy>=1.24,<2 ; sys_platform == 'darwin' and platform_machine == 'x86_64'",
+    "einops>=0.4",
+    "mido>=1.3",
+    "packaging>=20.0",
+    "safetensors>=0.4",
+    "huggingface_hub>=0.13",
+    "typer>=0.10",
+    "fastapi>=0.136.3",
+    "uvicorn[standard]>=0.48.0",
+    "httpx>=0.28.1",
+    "python-multipart>=0.0.29",
+    "soundfile>=0.14.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/muscriptor/muscriptor"
+Repository = "https://github.com/muscriptor/muscriptor"
+Issues = "https://github.com/muscriptor/muscriptor/issues"
+
+[project.scripts]
+muscriptor = "muscriptor.main:main"
+
+[tool.hatch.build]
+# The built frontend is gitignored but must ship in the sdist/wheel so that
+# `uvx muscriptor serve` has a UI. Built by `pnpm build` in web/.
+artifacts = ["muscriptor/web_dist"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["muscriptor"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=9.0.3",
+]
