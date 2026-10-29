@@ -16,7 +16,7 @@ serialize MIDI files — is replaced by a bundled stdlib-only writer
 |---|---|---|---|
 | **MuScriptor Load Model** | — | `MUSCRIPTOR_MODEL` | small (103M) / medium (307M) / large (1.4B), or a local `.safetensors` from `ComfyUI/models/muscriptor/` |
 | **MuScriptor Transcribe** | `MUSCRIPTOR_MODEL`, `AUDIO` | `MIDI` (bytes) | optional instrument restriction, sampling / beam search, batching |
-| **MuScriptor Save MIDI** | `MIDI` | `STRING` (path) | writes `output/midi/<prefix>_<ts>_<id>.mid` |
+| **MuScriptor Save MIDI** | `MIDI` | `STRING` (path) | writes `output/midi/<prefix>_<ts>_<id>.mid` and reports it as a `ui.midi` output (`/history`, `/view`) |
 
 Typical chain: `LoadAudio → MuScriptor Transcribe → MuScriptor Save MIDI`
 (with `MuScriptor Load Model` feeding the transcriber).

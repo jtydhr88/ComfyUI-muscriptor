@@ -244,8 +244,14 @@ class MuScriptorSaveMIDI:
             f.write(midi)
 
         print(f"[MuScriptor] Saved: {save_path}")
-        rel_path = os.path.relpath(save_path, COMFY_OUTPUT_DIR)
-        return (rel_path.replace("\\", "/"),)
+        rel_path = os.path.relpath(save_path, COMFY_OUTPUT_DIR).replace("\\", "/")
+        # Report the file as a ui output so /history keeps it and /view serves it.
+        subfolder, filename = os.path.split(rel_path)
+        return {
+            "ui": {"midi": [{"filename": filename, "subfolder": subfolder,
+                             "type": "output"}]},
+            "result": (rel_path,),
+        }
 
 
 # ============================================================================
